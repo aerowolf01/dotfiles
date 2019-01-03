@@ -3,7 +3,7 @@ source "%val{config}/plugins/plug.kak/rc/plug.kak"
 plug "andreyorst/powerline.kak"
 plug "Delapouite/kakoune-buffers"
 
-colorscheme zenburn
+colorscheme solarized-dark-termcolors
 add-highlighter global/ number-lines -hlcursor
 # Highlight 80th column
 add-highlighter global/ column 80 default,rgb:303030
