@@ -23,6 +23,7 @@ antigen apply
 
 export PATH="$HOME/.cargo/bin:/usr/local/heroku/bin:/Users/cooperlebrun/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/cooperlebrun/.local/bin:/usr/local/opt/llvm/bin"
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=23'
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -30,11 +31,13 @@ source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
   # If in remote session
-  export EDITOR='nvim'
+  export EDITOR='kak'
 else
   # if in local session
-  export EDITOR='nvim'
+  export EDITOR='kak'
 fi
+
+export BROWSER='firefox'
 
 which git > /dev/null && alias g='git'
 alias -g ni='nvim -p'
@@ -73,7 +76,8 @@ fi
 
 # Ruby
 source /usr/local/share/chruby/chruby.sh
-chruby ruby-2.5.3
+source /usr/local/share/chruby/auto.sh
+chruby ruby-2.6.2
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--reverse --border -m --preview='bat --color=\"always\" {}'"
