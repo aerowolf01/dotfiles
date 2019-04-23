@@ -16,13 +16,16 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-completions
 antigen bundle djui/alias-tips
 
-antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
+#antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
 #antigen theme lambda
+antigen theme robbyrussell
 
 antigen apply
 
-export PATH="$HOME/.cargo/bin:/usr/local/heroku/bin:/Users/cooperlebrun/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/cooperlebrun/.local/bin:/usr/local/opt/llvm/bin:$HOME/.local/bin"
-# source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+export PATH="$HOME/.cargo/bin:/usr/local/heroku/bin:/Users/cooperlebrun/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/cooperlebrun/.local/bin:/usr/local/opt/llvm/bin:$PATH"
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=23'
 
 # You may need to manually set your language environment
@@ -77,7 +80,7 @@ fi
 # Ruby
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
-chruby ruby-2.6.2
+chruby ruby-2.6.3
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--reverse --border -m --preview='bat --color=\"always\" {}'"
@@ -104,3 +107,4 @@ alias chr='chruby $(chruby | sed "s/\*/ /" | awk "{print $1}" | fzf)'
 alias dca="docker-compose run web ash"
 alias her="heroku run rails console -r"
 alias hel="heroku logs"
+alias ec="emacsclient -n"
