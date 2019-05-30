@@ -1,28 +1,13 @@
-mkdir -p $HOME/.cache/antigen
-export ADOTDIR=$HOME/.cache/antigen
-source $HOME/.zsh/antigen.zsh
+source <(antibody init)
+antibody bundle < $HOME/.antibody_plugins
 
-antigen use oh-my-zsh
-antigen bundle git
-antigen bundle bundler
-antigen bundle osx
-antigen bundle heroku
-antigen bundle rake
-antigen bundle ruby
-antigen bundle sudo
-antigen bundle tmux
-antigen bundle zsh-autosuggestions
-antigen bundle colored-man-pages
-antigen bundle command-not-found
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-completions
-antigen bundle djui/alias-tips
+autoload -Uz compinit
 
-#antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
-#antigen theme lambda
-antigen theme robbyrussell
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
 
-antigen apply
+compinit -C
 
 
 export PATH="$HOME/.cargo/bin:/usr/local/heroku/bin:/Users/cooperlebrun/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/cooperlebrun/.local/bin:/usr/local/opt/llvm/bin:$PATH"
@@ -35,25 +20,21 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=23'
 
 export BROWSER='firefox'
 
-which git > /dev/null && alias g='git'
-which htop > /dev/null && alias -g htop='sudo htop'
+alias g='git'
+alias -g htop='sudo htop'
 # Does this even work on OS X?
 alias buu='brew upgrade && brew cleanup -s'
 alias bdump='brew bundle dump --force --global'
-which tmux > /dev/null && alias tm='tmux'
+alias tm='tmux'
 alias resrc='source ~/.zshrc' # doesn't play well with antigen
 
 # Simple shortcuts for common directories
-alias proj='cd ~/Projects'
 alias dot='cd ~/dotfiles'
 
 # Heroku
-if type "heroku" &> /dev/null; then
-    alias he='heroku'
-    hscale() {
-	heroku ps:scale web=$2 --remote $1
-    }
-fi
+alias he='heroku'
+alias her="heroku run rails console -r"
+alias hel="heroku logs"
 
 # Docker
 if type "docker" &> /dev/null; then
@@ -78,25 +59,23 @@ export FZF_DEFAULT_OPTS="--reverse --border -m --preview='bat --color=\"always\"
 
 export BAT_THEME="zenburn"
 
-# TODO: enable multi/tweak fzf flags for pretty shit etc
-config () {
-  # what we need to prepend to a relative dotfile path to make it absolute
-  local PREFIX="${HOME}/dotfiles/"
+# # TODO: enable multi/tweak fzf flags for pretty shit etc
+# config () {
+#   # what we need to prepend to a relative dotfile path to make it absolute
+#   local PREFIX="${HOME}/dotfiles/"
 
-  # Get list of config files
-  pushd ~/dotfiles &>/dev/null
-  local CONFIG_FILES="$(git ls-files)"
-  popd &>/dev/null
+#   # Get list of config files
+#   pushd ~/dotfiles &>/dev/null
+#   local CONFIG_FILES="$(git ls-files)"
+#   popd &>/dev/null
 
-  $EDITOR $(echo $CONFIG_FILES | fzf --preview="bat --color=always ${PREFIX}{}" | awk -v p=${PREFIX} '{print p $0}')
-}
+#   $EDITOR $(echo $CONFIG_FILES | fzf --preview="bat --color=always ${PREFIX}{}" | awk -v p=${PREFIX} '{print p $0}')
+# }
 
 # alias -g pick="\$(fd --hidden -t f -E .git/ | fzf | awk -v pwd=\$(pwd) '{print pwd \"/\" \$0}')"
 wttr () { curl http://wttr.in/$1 }
 # alias chr='chruby $(chruby | sed "s/\*/ /" | awk "{print $1}" | fzf)'
 # alias dca="docker-compose run web ash"
-alias her="heroku run rails console -r"
-alias hel="heroku logs"
 alias ec="emacsclient -n"
 
 # Helper function requiring ruby and xsv spreadsheet tool
@@ -115,5 +94,4 @@ asv () { xsv fmt -t "\t" | awk -F "\t" $1 | xsv fmt -d "\t" }
 alias rec='ls -1t | head'
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+alias loadnvm='[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"'
