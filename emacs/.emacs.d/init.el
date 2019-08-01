@@ -45,13 +45,13 @@
 (run-server)
 
 (use-package diminish)
-(use-package hydra)
+(use-package hydra
+  :defer t)
 
 ;; MODIFIER KEYS
 ;; ===
 
 ;; I'm good on this for now :)
-
 
 ;; SANE DEFAULTS
 ;; ===
@@ -65,9 +65,6 @@
 
 (setq mouse-wheel-follow-mouse 't)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-
-;; ESC as universal exit button
-(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 
 ;; Disable auto save and backup files
 (setq auto-save-default nil)
@@ -88,7 +85,6 @@
  cursor-in-non-selected-windows t	; Hide cursors in inactive windows
  echo-keystrokes 0.1			; show keystrokes right away
  initial-scratch-message nil		; Empty scratch buffer by default
- initial-major-mode 'org-mode		; Org-mode by default
  sentence-end-double-space nil		; Sentences should end in one space
  confirm-kill-emacs 'y-or-n-p		; y and n options for emacs quiting
  help-window-select t			; select help window immediately so I don't have to switch to it to quit
@@ -103,7 +99,6 @@
 
 (use-package popwin
   :config (popwin-mode 1))
-
 
 ;; VISUALS
 ;; ===
@@ -129,7 +124,7 @@
 (global-hl-line-mode 1)
 
 ;; Load nice dark theme
-(load-theme 'doom-spacegrey)
+(load-theme 'zenburn)
 ;; Good themes list
 ;; doom-spacegrey, labburn, tsdh-light, material-light, gruvbox, badwolf
 
@@ -201,6 +196,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; EasyMotion style visual movement
 (use-package avy
+  :defer t
   :bind ("C-;" . avy-goto-char))
 
 (defhydra hydra-nav (global-map "C-\\")
@@ -228,16 +224,11 @@ point reaches the beginning or end of the buffer, stop there."
   ("C-'" . er/expand-region)
   ("C-\"" . er/contract-region))
 
-;; Multiple cursors for simultaneous editing
 (use-package multiple-cursors
-  :config
-  (defhydra hydra-cursors (global-map "C-c m")
-    "multiple-cursors"
-    (">" mc/mark-next-like-this "mark next")
-    ("<" mc/mark-previous-like-this "mark previous")
-    ("." mc/mark-all-like-this "mark all like this")
-    ("s" mc/edit-lines "mark lines")))
-
+  :bind (("C-c ." .'mc/mark-all-like-this)
+	 ("C-c S" . 'mc/edit-lines)
+	 ("M-<down>" . 'mc/mark-next-like-this)
+	 ("M-<up>" . 'mc/mark-previous-like-this)))
 
 ;; WINDOW MANAGEMENT
 ;; ===
@@ -248,9 +239,11 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Project switching and fuzzy file search in project with cmd-P and cmd-p
 (use-package projectile
+  :defer t
   :diminish projectile-mode
   :config (projectile-mode +1))
 (use-package helm-projectile
+  :defer t
   :config (helm-projectile-on)
   :bind
   ("s-p" . helm-projectile-find-file)
@@ -270,16 +263,24 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Use helm to replace a lot of default menus
 (use-package helm
+  :defer t
   :diminish helm-mode
-  :config (helm-mode 1)
+  :config
+  (helm-mode 1)
+  (setq helm-boring-buffer-regexp-list (list
+					(rx "*magit-")
+					(rx "*helm")
+					(rx "*Echo")
+					(rx "*Flycheck")
+					(rx "*org-src-font")
+					(rx "*Minibuf")
+					(rx "magit-process")))
   :bind
   ("C-x b" . helm-buffers-list)
   ("C-x C-f" . helm-find-files)
   ("M-x" . helm-M-x)
   ("C-x C-r" . helm-recentf))
 
-
-;; (ido-mode) ; Made obsolete by helm?
 
 ;; VERSION CONTROL WITH GIT
 ;; ===
@@ -290,6 +291,7 @@ point reaches the beginning or end of the buffer, stop there."
   :config (global-git-gutter-mode +1))
 
 (use-package magit
+  :defer t
   :bind ("C-x g" . 'magit-status))
 
 
@@ -304,10 +306,12 @@ point reaches the beginning or end of the buffer, stop there."
 ;; ===
 
 ;; Use CSS-like syntax to quickly write html
-(use-package emmet-mode)
+(use-package emmet-mode
+  :defer t)
 
 ;; Completion engine
 (use-package company
+  :defer t
   :diminish company-mode)
 
 
@@ -330,16 +334,19 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Automatic syntax checking and linting
 (use-package flycheck
+  :defer t
   :diminish flycheck-mode
   :commands global-flycheck-mode
   :init (add-hook 'prog-mode-hook 'global-flycheck-mode))
 
 ;; Integrate with 'chruby' ruby version management tool
 (use-package chruby
+  :defer t
   :config (chruby-use "ruby-2.6.3"))
 
 ;; Search for string in projects
 (use-package helm-ag
+  :defer t
   :bind ("s-f" . 'helm-do-ag-project-root))
 
 ;; ORG MODE
@@ -401,6 +408,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;; ===
 
 (use-package circe
+  :defer t
   :config
   (setq circe-network-options
 	'(("Freenode"
