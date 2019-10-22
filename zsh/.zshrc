@@ -1,6 +1,8 @@
 source <(antibody init)
 antibody bundle < $HOME/.antibody_plugins
 
+bindkey -e
+
 # only compinit once a day
 autoload -Uz compinit
 for dump in ~/.zcompdump(N.mh+24); do
@@ -81,6 +83,7 @@ wttr () { curl http://wttr.in/$1 }
 # alias dca="docker-compose run web ash"
 alias ec="emacsclient -n"
 alias e="emacs -nw"
+alias ni="nvim"
 
 # Helper function requiring ruby and xsv spreadsheet tool
 #
