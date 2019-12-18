@@ -25,16 +25,15 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=23'
 
 export BROWSER='firefox'
 
+# Abbreviations
 alias g='git'
-alias -g htop='sudo htop'
-# Does this even work on OS X?
-alias buu='brew upgrade && brew cleanup -s'
-alias bdump='brew bundle dump --force --global'
 alias tm='tmux'
-alias resrc='source ~/.zshrc' # doesn't play well with antigen
-
-# Simple shortcuts for common directories
+alias -g htop='sudo htop'
 alias dot='cd ~/dotfiles'
+
+alias buu='brew upgrade && brew cleanup -s' # brew upgrade / clean old packages
+alias bdump='brew bundle dump --force --global' # show all installed brew packages
+alias resrc='source ~/.zshrc' # doesn't play well with antigen
 
 # Heroku
 alias he='heroku'
@@ -57,7 +56,7 @@ fi
 # Ruby
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
-chruby ruby-2.6.3
+chruby ruby-2.6.5
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--reverse --border -m --preview='bat --color=\"always\" {}'"
@@ -79,11 +78,11 @@ export BAT_THEME="zenburn"
 
 # alias -g pick="\$(fd --hidden -t f -E .git/ | fzf | awk -v pwd=\$(pwd) '{print pwd \"/\" \$0}')"
 wttr () { curl http://wttr.in/$1 }
-# alias chr='chruby $(chruby | sed "s/\*/ /" | awk "{print $1}" | fzf)'
-# alias dca="docker-compose run web ash"
-alias ec="emacsclient -n"
-alias e="emacs -nw"
-alias ni="nvim"
+alias chr='chruby $(chruby | sed "s/\*/ /" | awk "{print $1}" | fzf)'
+alias dca="docker-compose run web ash"
+alias ls="exa"
+alias l="exa -lh --git"
+alias tma='tmux a -t $(tmux ls -F #{session_name} | fzf)'
 
 # Helper function requiring ruby and xsv spreadsheet tool
 #
